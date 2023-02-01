@@ -1,0 +1,41 @@
+.mainNavigation{
+    width: 100%;
+    height: 4.5rem;
+    background-color: #ddd6fe;
+    /* background-color: #a78bfa; */
+}
+.mainNavigation nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.mainNavigation ul{
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}
+.mainNavigation li{
+    margin: 0 1rem;
+}
+.mainNavigation a{
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.mainNavigation div{
+    padding: 0.5rem 1rem;
+}
+.mainNavigation a:hover,.mainNavigation a:active{
+    color: #8b5cf6;
+    background-color: white;
+    border-bottom: 5px solid #8b5cf6;
+}
+.active{
+    color: #8b5cf6;
+    background-color: white;
+    border-bottom: 5px solid #8b5cf6;
+}
