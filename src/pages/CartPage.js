@@ -53,7 +53,7 @@ const CartSummery = ({ totalprice,cart }) => {
       <h6>price total = $ {totalprice}</h6>
       <h6>total discount = $ {totalDiscount(cart)}</h6>
       <h6>netprice : {totalprice - totalDiscount(cart)}</h6>
-      <Link to={'/checkout'}>checkout</Link>
+      <Link to={"/signup?redirect=checkout"}>checkout</Link>
     </div>
   );
 }

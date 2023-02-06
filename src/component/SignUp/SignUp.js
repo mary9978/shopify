@@ -1,14 +1,18 @@
 import { useFormik } from "formik";
+import { useNavigate,useLocation} from 'react-router-dom';
 import { useState } from "react";
 import Input from "../../common/Input";
 import { signUpServices } from "../../services/SignupService";
 import { Link } from "react-router-dom";
 import { basicSchema } from "../../schemas";
+import { useAuthActions } from "../../Context/AuthProvider";
 const SignUp = () => {
-  //const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(null);
+  let navigate = useNavigate();
+  let location = useLocation();
+  console.log("location", location);
+  let setState = useAuthActions();
   const [err, setErr] = useState("");
-  const [toastAlert, setToast] = useState(true);
   const onSubmit = async (values, actions) => {
     const { name, email, phoneNumber, password } = values;
     const userData = {
@@ -20,7 +24,10 @@ const SignUp = () => {
     try {
       const { data } = await signUpServices(userData);
       setErr("");
+      setState(data);
+      localStorage.setItem("AuthState", JSON.stringify(data));
       actions.resetForm();
+      navigate('/');
     } catch (error) {
       if (error.response && error.response.data.message) setErr(error.response.data.message);
     }
@@ -31,8 +38,6 @@ const SignUp = () => {
     phoneNumber: "",
     password: "",
   };
-  //   const notify = () => toast.success("Successfully Submitted!");
-
   const formik = useFormik({
     initialValues: formData || initialValues,
     onSubmit,

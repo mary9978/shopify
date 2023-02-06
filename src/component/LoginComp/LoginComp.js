@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
 import { Link } from 'react-router-dom';
 import Input from '../../common/Input';
 import { LoginSchema } from '../../schemas/index';
+import { useAuthActions } from "../../Context/AuthProvider";
 import { LoginService } from '../../services/LoginService';
 function LoginComp() {
+  const navigate = useNavigate();
+  let setState = useAuthActions();
     const [err,setErr]=useState('');
     const onSubmit = async (values, actions) => {
       const {email, password } = values;
@@ -14,9 +18,11 @@ function LoginComp() {
       };
       try {
         const { data } = await LoginService(userData);
-        console.log("data", data);
+        setState(data);
+        localStorage.setItem("AuthState", JSON.stringify(data));
         setErr("");
         actions.resetForm();
+        navigate("/");
       } catch (error) {
         if (error.response && error.response.data.message)
           setErr(error.response.data.message);
