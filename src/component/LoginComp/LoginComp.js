@@ -19,7 +19,7 @@ function LoginComp() {
       try {
         const { data } = await LoginService(userData);
         setState(data);
-        localStorage.setItem("AuthState", JSON.stringify(data));
+        //localStorage.setItem("AuthState", JSON.stringify(data));
         setErr("");
         actions.resetForm();
         navigate("/");

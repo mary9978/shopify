@@ -48,6 +48,9 @@ const CartReducer = (state, action) => {
 
     case "REMOVE_FROM_CART":
       return RemoveProductFromCart(state, action);
+    
+    case "RETURN_ALL":
+      return state;
     default:
       return state;
   }
