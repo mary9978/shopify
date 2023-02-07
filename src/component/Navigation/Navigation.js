@@ -1,6 +1,7 @@
 import './navigation.css';
 import { NavLink,useNavigate } from 'react-router-dom';
 import { useCart } from '../../Context/CartProvider';
+import { useAuth } from '../../Context/AuthProvider';
 import Dropdown from "react-bootstrap/Dropdown";
 import UserIcon from '../../images/icons8-user-32.png';
 import ShoppingBasketTwoToneIcon from '@mui/icons-material/ShoppingBasketTwoTone';
@@ -8,6 +9,7 @@ import EnterIcon from '../../images/icons8-enter-24.png';
 import LogOutIcon from "../../images/icons8-logout-24.png";
 const Navigation = () => {
   const cartItem = useCart().total;
+  const auth = useAuth();
   const navigate = useNavigate();
   const LogOutHandler = () => {
     localStorage.removeItem("AuthState");
@@ -29,7 +31,7 @@ const Navigation = () => {
               </NavLink>
             </li>
             <li>
-              {localStorage.getItem("AuthState") !== null ? (
+              {auth !== null && localStorage.getItem("AuthState")!== null ? (
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic">
                     <img src={UserIcon} alt={""} width={"25px"} />

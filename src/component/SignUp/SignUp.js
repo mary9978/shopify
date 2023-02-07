@@ -10,7 +10,6 @@ const SignUp = () => {
   const [formData, setFormData] = useState(null);
   let navigate = useNavigate();
   let location = useLocation();
-  console.log("location", location);
   let setState = useAuthActions();
   const [err, setErr] = useState("");
   const onSubmit = async (values, actions) => {
@@ -25,7 +24,7 @@ const SignUp = () => {
       const { data } = await signUpServices(userData);
       setErr("");
       setState(data);
-      localStorage.setItem("AuthState", JSON.stringify(data));
+      //localStorage.setItem("AuthState", JSON.stringify(data));
       actions.resetForm();
       navigate('/');
     } catch (error) {

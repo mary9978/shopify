@@ -1,4 +1,10 @@
-import { useReducer,createContext,useContext } from "react";
+import {
+  useReducer,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import CartReducer from "./CartReducer";
 const cartContext = createContext();
 const cartDispatcher = createContext();
@@ -7,8 +13,18 @@ const intialValues ={
     total:0,
     totalprice:0
 }
-const CartProvider = ({children}) => {
-    const[cart,dispatch]=useReducer(CartReducer,intialValues);
+const CartProvider = ({ children }) => {
+    const [cartList] = useState(() => {
+      return JSON.parse(localStorage.getItem("cartItem")) || intialValues;
+    });
+  const [cart, dispatch] = useReducer(CartReducer, cartList);
+
+  
+    useEffect(() => {
+      const data = JSON.stringify(cart);
+      localStorage.setItem("cartItem", data);
+    }, [cart]);
+  
     return ( 
      <cartContext.Provider value={cart}>
         <cartDispatcher.Provider value={dispatch}>

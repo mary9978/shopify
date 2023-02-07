@@ -2,11 +2,12 @@ import Layout from "../Layout/Layout";
 import { useCart, useCartAction } from "../Context/CartProvider";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { totalDiscount } from "../utils/totalDiscount";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 // import CartSummery from "../component/CartSummery/CartSummery";
 const Cart = () => {
-  const { cart, total } = useCart();
+  const { cart } = useCart();
   const price = useCart().totalprice;
+  const [searchParams] = useSearchParams();
   const dispatch = useCartAction();
   return (
     <Layout>
