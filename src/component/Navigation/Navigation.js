@@ -13,7 +13,6 @@ const Navigation = () => {
   const navigate = useNavigate();
   const LogOutHandler = () => {
     localStorage.removeItem("AuthState");
-    localStorage.removeItem("cartItem");
     navigate("/")
   }
     return (

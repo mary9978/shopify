@@ -9,13 +9,13 @@ import CheckoutPage from "./pages/CheckoutPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AuthProvider from "./Context/AuthProvider";
-import ButtonComponent from "./common/Button";
-
+import ProductProvider from './Context/ProductProvider';
 function App() {
   return (
     <div className="App">
       <Router>
-          <ToastContainer />
+        <ToastContainer />
+        <ProductProvider>
           <AuthProvider>
             <CartProvider>
               <Routes>
@@ -27,6 +27,7 @@ function App() {
               </Routes>
             </CartProvider>
           </AuthProvider>
+        </ProductProvider>
       </Router>
     </div>
   );

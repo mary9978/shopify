@@ -2,7 +2,7 @@ const AddProductToCart = (state, action) => {
   const updatedCart = [...state.cart];
   const updatedTotal = state.total + 1;
   const updatedItemIndex = updatedCart.findIndex(
-    (item) => item.id === action.payload.id
+    (item) => item._id === action.payload._id
   );
   if (updatedItemIndex < 0) {
     updatedCart.push({ ...action.payload, quantity: 1 });
@@ -20,11 +20,11 @@ const AddProductToCart = (state, action) => {
 const RemoveProductFromCart = (state, action) => {
   const updatedCart1 = [...state.cart];
   const updatedTotal1 = state.total - 1;
-  const index = updatedCart1.findIndex((item) => item.id === action.payload.id);
+  const index = updatedCart1.findIndex((item) => item._id === action.payload._id);
   const updatedItem = { ...updatedCart1[index] };
   if (updatedItem.quantity === 1) {
     const filtercartItem = updatedCart1.filter(
-      (c) => c.id !== action.payload.id
+      (c) => c._id !== action.payload._id
     );
     return {
       totalprice: state.totalprice - action.payload.price,

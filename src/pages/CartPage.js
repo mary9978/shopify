@@ -8,7 +8,6 @@ const Cart = () => {
   const { cart } = useCart();
   const price = useCart().totalprice;
   const [searchParams] = useSearchParams();
-  console.log("searchParams", searchParams.get("name"));
   const dispatch = useCartAction();
   return (
     <Layout>
