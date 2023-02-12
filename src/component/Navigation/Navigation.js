@@ -1,26 +1,36 @@
 import './navigation.css';
+import React from "react";
 import { NavLink,useNavigate } from 'react-router-dom';
 import { useCart } from '../../Context/CartProvider';
 import { useAuth } from '../../Context/AuthProvider';
-// import styled from 'styled-components';
-import styled from 'styled-components';
-import Dropdown from "react-bootstrap/Dropdown";
-import UserIcon from '../../images/icons8-user-32.png';
-import ShoppingBasketTwoToneIcon from '@mui/icons-material/ShoppingBasketTwoTone';
-import EnterIcon from '../../images/icons8-enter-24.png';
-import LogOutIcon from "../../images/icons8-logout-24.png";
-
-
-import { AppBar, Toolbar } from "@mui/material";
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Logo from '../../images/logo.svg';
+import styled from '@mui/material';
+import {AppBar, Box, Toolbar,Tabs,Tab} from "@mui/material";
+import OpenSansBold from '../../fonts/OpenSans/OpenSans-Bold.ttf'
+import {Typography} from "@mui/material";
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 const AppBarStyle = styled(AppBar)`
 display:flex;
 align-items:center;
 justify-content: space-between;
-background-color: powderblue !important;
-height:80px
 `;
+const CustomTabs = styled(Tabs)(() => ({
+marginLeft:'auto'
+}));
+const CustomTabItem=styled(Tab)((theme) => ({
 
-const Navigation = () => {
+    ...theme.Typography.Tab,
+    textTransform:'none',
+    // fontFamily: OpenSansBold,
+    // fontWeight:700,
+    // fontSize: "1.3rem !important",
+    minWidth:'10 !important',
+    marginLeft:'15px !important',
+}));
+const Navigation = (props) => {
+
   const cartItem = useCart().total;
   const auth = useAuth();
   const navigate = useNavigate();
@@ -28,12 +38,37 @@ const Navigation = () => {
     localStorage.removeItem("AuthState");
     navigate("/")
   }
+  function ElevationScroll(props) {
+    const { children } = props;
+    const trigger = useScrollTrigger({
+      disableHysteresis: true,
+      threshold: 0,
+    });
+    return React.cloneElement(children, {
+      elevation: trigger ? 4 : 0,
+    });
+  }
   return (
-    <AppBar position="fixed">
-      <Toolbar>
-        <AppBarStyle>Mari site</AppBarStyle>
-      </Toolbar>
-    </AppBar>
+      <>
+        <ElevationScroll>
+          <AppBar position="fixed" color={'primary'}>
+            <Toolbar>
+                  <img src={Logo} alt={'maris website'}/>
+                  <Typography variant={'h4'} color={'#7938F2'}>Mari Site</Typography>
+               <CustomTabs>
+                <CustomTabItem label={'Home'}/>
+                 <CustomTabItem label={'Blogs'}/>
+                 <CustomTabItem label={'Contact Us'}/>
+                 <CustomTabItem label={'About Us'}/>
+                 <CustomTabItem label={'SignIN'}/>
+               </CustomTabs>
+
+            </Toolbar>
+          </AppBar>
+        </ElevationScroll>
+      </>
+
+
     // <header className="mainNavigation">
     //   <nav>
     //     <ul>
