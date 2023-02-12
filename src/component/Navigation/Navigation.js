@@ -1,36 +1,50 @@
 import './navigation.css';
-import React from "react";
+import React,{useState} from "react";
 import { NavLink,useNavigate } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
 import { useCart } from '../../Context/CartProvider';
 import { useAuth } from '../../Context/AuthProvider';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Logo from '../../images/logo.svg';
-import styled from '@mui/material';
-import {AppBar, Box, Toolbar,Tabs,Tab} from "@mui/material";
+// import styled from '@mui/material';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import LoginIcon from '@mui/icons-material/Login';
+import Logout from '@mui/icons-material/Logout';
+import Settings from '@mui/icons-material/Settings';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import styled from "styled-components";
+import {AppBar, Box, Toolbar,Tabs,Tab,Tooltip,Avatar,IconButton,Menu,MenuItem,Divider,ListItemIcon,Badge} from "@mui/material";
 import OpenSansBold from '../../fonts/OpenSans/OpenSans-Bold.ttf'
 import {Typography} from "@mui/material";
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-const AppBarStyle = styled(AppBar)`
-display:flex;
-align-items:center;
-justify-content: space-between;
-`;
+
+
 const CustomTabs = styled(Tabs)(() => ({
 marginLeft:'auto'
 }));
-const CustomTabItem=styled(Tab)((theme) => ({
-
-    ...theme.Typography.Tab,
+const StyledBadge = styled(Badge)(() => ({
+    '& .MuiBadge-badge': {
+        width:"10",
+        height:"10",
+        right: -3,
+        top: 20,
+        padding: '0 4px',
+    },
+}));
+const CustomBox = styled(Box)(() => ({
+    marginLeft:'auto'
+}));
+const CustomTabItem=styled(Tab)(() => ({
+    // ...theme.Typography.Tab,
     textTransform:'none',
-    // fontFamily: OpenSansBold,
-    // fontWeight:700,
-    // fontSize: "1.3rem !important",
+    fontFamily: OpenSansBold,
+    fontWeight:700,
+    fontSize: "1rem !important",
     minWidth:'10 !important',
     marginLeft:'15px !important',
 }));
-const Navigation = (props) => {
 
+const Navigation = (props) => {
   const cartItem = useCart().total;
   const auth = useAuth();
   const navigate = useNavigate();
@@ -38,6 +52,14 @@ const Navigation = (props) => {
     localStorage.removeItem("AuthState");
     navigate("/")
   }
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const open = Boolean(anchorEl);
   function ElevationScroll(props) {
     const { children } = props;
     const trigger = useScrollTrigger({
@@ -55,13 +77,104 @@ const Navigation = (props) => {
             <Toolbar>
                   <img src={Logo} alt={'maris website'}/>
                   <Typography variant={'h4'} color={'#7938F2'}>Mari Site</Typography>
-               <CustomTabs>
-                <CustomTabItem label={'Home'}/>
-                 <CustomTabItem label={'Blogs'}/>
-                 <CustomTabItem label={'Contact Us'}/>
-                 <CustomTabItem label={'About Us'}/>
-                 <CustomTabItem label={'SignIN'}/>
-               </CustomTabs>
+                <CustomBox sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    {auth !== null && localStorage.getItem("AuthState")!== null ?
+                        <Tooltip title={'account-menu'}>
+                            <IconButton
+                                onClick={handleClick}
+                                size="small"
+                                aria-controls={open ? 'account-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                sx={{ml: 2 , backgroundColor:"none !important",display:'flex',alignItems:'center'}}
+                            >
+                                <Avatar sx={{background:"none !important"}}>
+                                    <ArrowDropDownIcon sx={{color:"#7938F2"}}/>
+                                    <PersonIcon sx={{color:"#7938F2"}}/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        :
+                        <LoginIcon/>
+                    }
+
+                    <IconButton sx={{ml:'2'}}>
+                        <StyledBadge badgeContent={cartItem} color="secondary">
+                            <LocalMallIcon sx={{color:"#7938F2"}} onClick={()=> navigate('/cart')}/>
+                        </StyledBadge>
+
+                    </IconButton>
+                </CustomBox>
+
+                <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                        elevation: 0,
+                        sx: {
+                            overflow: 'visible',
+                            mt: 1.5,
+                            '& .MuiAvatar-root': {
+                                width: 32,
+                                height: 32,
+                                ml: -0.5,
+                                mr: 1,
+                            },
+                            '&:before': {
+                                content: '""',
+                                display: 'block',
+                                position: 'absolute',
+                                top: 0,
+                                right: 14,
+                                width: 10,
+                                height: 10,
+                                bgcolor: '#93c5fd',
+                                transform: 'translateY(-50%) rotate(45deg)',
+                                zIndex: 0,
+                            },
+                        },
+                    }}
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                    <MenuItem onClick={handleClose}>
+                        <Avatar /> Profile
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <Avatar /> My account
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <PersonAdd fontSize="small" />
+                        </ListItemIcon>
+                        Add another account
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <Settings fontSize="small" />
+                        </ListItemIcon>
+                        Settings
+                    </MenuItem>
+                    <MenuItem onClick={() => LogOutHandler()}>
+                        <ListItemIcon>
+                            <Logout fontSize="small" />
+                        </ListItemIcon>
+                        Logout
+                    </MenuItem>
+                </Menu>
+
+               {/*<CustomTabs>*/}
+               {/*    */}
+               {/* <CustomTabItem label={'Home'}/>*/}
+               {/*  <CustomTabItem label={'Blogs'}/>*/}
+               {/*  <CustomTabItem label={'Contact Us'}/>*/}
+               {/*  <CustomTabItem label={'About Us'}/>*/}
+               {/*  <CustomTabItem label={'SignIN'}/>*/}
+               {/*</CustomTabs>*/}
 
             </Toolbar>
           </AppBar>
@@ -89,7 +202,7 @@ const Navigation = (props) => {
     //             <Dropdown.Toggle id="dropdown-basic">
     //               <img src={UserIcon} alt={""} width={"25px"} />
     //             </Dropdown.Toggle>
-
+    //
     //             <Dropdown.Menu>
     //               <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
     //               <Dropdown.Item href="#/action-2">
