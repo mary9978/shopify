@@ -1,6 +1,7 @@
 import './navigation.css';
 import React,{useState} from "react";
 import { NavLink,useNavigate } from 'react-router-dom';
+import Pacifico from '../../fonts/Pacifico-Regular.ttf';
 import PersonIcon from '@mui/icons-material/Person';
 import { useCart } from '../../Context/CartProvider';
 import { useAuth } from '../../Context/AuthProvider';
@@ -14,13 +15,13 @@ import Settings from '@mui/icons-material/Settings';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import styled from "styled-components";
-import {AppBar, Box, Toolbar,Tabs,Tab,Tooltip,Avatar,IconButton,Menu,MenuItem,Divider,ListItemIcon,Badge} from "@mui/material";
+import {AppBar, Box, Toolbar,Tabs,Tab,Tooltip,Avatar,IconButton,Menu,MenuItem,Divider,ListItemIcon,Badge,Paper,Button} from "@mui/material";
 import OpenSansBold from '../../fonts/OpenSans/OpenSans-Bold.ttf'
 import {Typography} from "@mui/material";
 
 
 const CustomTabs = styled(Tabs)(() => ({
-marginLeft:'auto'
+// marginLeft:'auto'
 }));
 const StyledBadge = styled(Badge)(() => ({
     '& .MuiBadge-badge': {
@@ -30,6 +31,22 @@ const StyledBadge = styled(Badge)(() => ({
         top: 20,
         padding: '0 4px',
     },
+}));
+const HeaderButton = styled(Button)(() => ({
+    backgroundColor:"#c4b5fd !important",
+    borderRadius:'15px !important',
+    color:"#7938F2 !important",
+    textTransform:'none !important',
+    fontFamily:OpenSansBold,
+    '&:hover':{
+        variant:'outlined',
+        border:'2px solid #7938F2',
+        backgroundColor:'#93c5fd !important',
+        textTransform:'none',
+        cursor:'pointer',
+        borderRadius:'15px !important',
+    }
+
 }));
 const CustomBox = styled(Box)(() => ({
     marginLeft:'auto'
@@ -43,8 +60,13 @@ const CustomTabItem=styled(Tab)(() => ({
     minWidth:'10 !important',
     marginLeft:'15px !important',
 }));
+const SiteName=styled(Typography)(() => ({
+    '.css-d1q4f0-MuiTypography-root':{
+        fontFamily:Pacifico
+    }
+}));
 
-const Navigation = (props) => {
+const Navigation = () => {
   const cartItem = useCart().total;
   const auth = useAuth();
   const navigate = useNavigate();
@@ -76,7 +98,13 @@ const Navigation = (props) => {
           <AppBar position="fixed" color={'primary'}>
             <Toolbar>
                   <img src={Logo} alt={'maris website'}/>
-                  <Typography variant={'h4'} color={'#7938F2'}>Mari Site</Typography>
+                  <SiteName variant={'h4'} color={'#7938F2'}>Mari Site</SiteName>
+                <CustomTabs value={}>
+                    <CustomTabItem label={'Home'}/>
+                    <CustomTabItem label={'Blogs'}/>
+                    <CustomTabItem label={'Contact Us'}/>
+                    <CustomTabItem label={'About Us'}/>
+                </CustomTabs>
                 <CustomBox sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                     {auth !== null && localStorage.getItem("AuthState")!== null ?
                         <Tooltip title={'account-menu'}>
@@ -95,12 +123,15 @@ const Navigation = (props) => {
                             </IconButton>
                         </Tooltip>
                         :
-                        <LoginIcon/>
+                        <HeaderButton variant="contained" onClick={()=> navigate('/signup')}>
+                             <LoginIcon sx={{color:"#7938F2 !important",marginRight:'0.5rem'}}/>
+                             <Typography variant={'body'}>Signup | Login</Typography>
+                        </HeaderButton>
                     }
 
                     <IconButton sx={{ml:'2'}}>
                         <StyledBadge badgeContent={cartItem} color="secondary">
-                            <LocalMallIcon sx={{color:"#7938F2"}} onClick={()=> navigate('/cart')}/>
+                            <LocalMallIcon sx={{color:"#7938F2",fontSize:'28px'}} onClick={()=> navigate('/cart')}/>
                         </StyledBadge>
 
                     </IconButton>
@@ -115,6 +146,10 @@ const Navigation = (props) => {
                     PaperProps={{
                         elevation: 0,
                         sx: {
+                            width:'200px !important',
+                            top: '28px !important',
+                            background: '#c4b5fd',
+                            right: '72px',
                             overflow: 'visible',
                             mt: 1.5,
                             '& .MuiAvatar-root': {
@@ -147,18 +182,6 @@ const Navigation = (props) => {
                         <Avatar /> My account
                     </MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                            <PersonAdd fontSize="small" />
-                        </ListItemIcon>
-                        Add another account
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                            <Settings fontSize="small" />
-                        </ListItemIcon>
-                        Settings
-                    </MenuItem>
                     <MenuItem onClick={() => LogOutHandler()}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
@@ -166,16 +189,6 @@ const Navigation = (props) => {
                         Logout
                     </MenuItem>
                 </Menu>
-
-               {/*<CustomTabs>*/}
-               {/*    */}
-               {/* <CustomTabItem label={'Home'}/>*/}
-               {/*  <CustomTabItem label={'Blogs'}/>*/}
-               {/*  <CustomTabItem label={'Contact Us'}/>*/}
-               {/*  <CustomTabItem label={'About Us'}/>*/}
-               {/*  <CustomTabItem label={'SignIN'}/>*/}
-               {/*</CustomTabs>*/}
-
             </Toolbar>
           </AppBar>
         </ElevationScroll>

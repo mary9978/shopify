@@ -2,6 +2,7 @@ import { createTheme } from '@mui/material/styles';
 import {orange} from "@mui/material/colors";
 import OpenSansBold from './fonts/OpenSans/OpenSans-Bold.ttf';
 import OpenSans from './fonts/OpenSans/OpenSans-Medium.ttf';
+import pacifico from './fonts/Pacifico-Regular.ttf';
 import {Tab} from "@mui/material";
  export default createTheme({
     status: {
@@ -33,7 +34,8 @@ import {Tab} from "@mui/material";
         },
         h4:{
             fontWeight:300,
-            fontSize:"23px"
+            fontSize:"23px",
+            fontFamily:pacifico
         }
      }
 
