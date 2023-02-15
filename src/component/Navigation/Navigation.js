@@ -14,6 +14,7 @@ import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import TabList from '@mui/material';
 import styled from "styled-components";
 import {AppBar, Box, Toolbar,Tabs,Tab,Tooltip,Avatar,IconButton,Menu,MenuItem,Divider,ListItemIcon,Badge,Paper,Button} from "@mui/material";
 import OpenSansBold from '../../fonts/OpenSans/OpenSans-Bold.ttf'
@@ -51,8 +52,17 @@ const HeaderButton = styled(Button)(() => ({
 const CustomBox = styled(Box)(() => ({
     marginLeft:'auto'
 }));
+
 const CustomTabItem=styled(Tab)(() => ({
-    // ...theme.Typography.Tab,
+    '..Mui-selected':{
+        background:"red !important",
+        color: 'Black !important',
+    },
+    '.css-m45g8g-MuiButtonBase-root-MuiTab-root.Mui-selected' :{
+        background:"red !important",
+    color: 'Black !important',
+    borderBottom: '2px solid #c4b5fd !important'
+},
     textTransform:'none',
     fontFamily: OpenSansBold,
     fontWeight:700,
@@ -60,6 +70,8 @@ const CustomTabItem=styled(Tab)(() => ({
     minWidth:'10 !important',
     marginLeft:'15px !important',
 }));
+
+
 const SiteName=styled(Typography)(() => ({
     '.css-d1q4f0-MuiTypography-root':{
         fontFamily:Pacifico
@@ -67,9 +79,13 @@ const SiteName=styled(Typography)(() => ({
 }));
 
 const Navigation = () => {
+    const [value, setValue] = React.useState(0);
   const cartItem = useCart().total;
   const auth = useAuth();
   const navigate = useNavigate();
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
   const LogOutHandler = () => {
     localStorage.removeItem("AuthState");
     navigate("/")
@@ -99,12 +115,20 @@ const Navigation = () => {
             <Toolbar>
                   <img src={Logo} alt={'maris website'}/>
                   <SiteName variant={'h4'} color={'#7938F2'}>Mari Site</SiteName>
-                <CustomTabs value={}>
-                    <CustomTabItem label={'Home'}/>
+
+
+
+                <CustomTabs  value={value} onChange={handleChange} TabIndicatorProps={{style: {background:'red'}}}>
+                    <CustomTabItem label={'Home'} />
                     <CustomTabItem label={'Blogs'}/>
                     <CustomTabItem label={'Contact Us'}/>
                     <CustomTabItem label={'About Us'}/>
                 </CustomTabs>
+
+
+
+
+
                 <CustomBox sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                     {auth !== null && localStorage.getItem("AuthState")!== null ?
                         <Tooltip title={'account-menu'}>
@@ -133,7 +157,6 @@ const Navigation = () => {
                         <StyledBadge badgeContent={cartItem} color="secondary">
                             <LocalMallIcon sx={{color:"#7938F2",fontSize:'28px'}} onClick={()=> navigate('/cart')}/>
                         </StyledBadge>
-
                     </IconButton>
                 </CustomBox>
 

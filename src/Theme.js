@@ -18,6 +18,7 @@ import {Tab} from "@mui/material";
          primary: {
              // light:"#93c5fd",
              // main: "#3b82f6",
+             // main: "#93c5fd",
              main: "#93c5fd",
          },
          secondary: {
