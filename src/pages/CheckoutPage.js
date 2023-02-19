@@ -1,5 +1,8 @@
+import Layout from "../Layout/Layout";
+
+
 const CheckoutPage = () => {
-    return <h1>CheckoutPage</h1>;
+    return <Layout>CheckoutPage</Layout>;
 }
  
 export default CheckoutPage;
