@@ -16,7 +16,7 @@ const Product = () => {
     <>
       <div className="container">
         <div className="row justify-content-center align-items-center">
-          {productData.map((item) => {
+          {products.map((item) => {
             return (
               <div className="col-md-4 mt-3" key={item._id}>
                 <ProductCard productList={item} />
