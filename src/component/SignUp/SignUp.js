@@ -1,15 +1,24 @@
 import { useFormik } from "formik";
 import { useNavigate,useLocation} from 'react-router-dom';
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import Input from "../../common/Input";
 import { signUpServices } from "../../services/SignupService";
 import { Link } from "react-router-dom";
 import { basicSchema } from "../../schemas";
-import { useAuthActions } from "../../Context/AuthProvider";
+import {useAuth, useAuthActions} from "../../Context/AuthProvider";
+import {useSearchParams} from "react-router-dom";
+
 const SignUp = () => {
+  const [searchParams]= useSearchParams() ;
+  const redirect = searchParams.get('redirect') || '/';
+  //TODO: check if auth dont show sign up page and redirect to checkout page
+  const auth = useAuth();
+  const setAuth = useAuthActions();
+  useEffect(()=>{
+      if(auth) navigate(`/${redirect}`);
+  },[redirect,auth]);
   const [formData, setFormData] = useState(null);
   let navigate = useNavigate();
-  let location = useLocation();
   let setState = useAuthActions();
   const [err, setErr] = useState("");
   const onSubmit = async (values, actions) => {
@@ -26,7 +35,7 @@ const SignUp = () => {
       setState(data);
       //localStorage.setItem("AuthState", JSON.stringify(data));
       actions.resetForm();
-      navigate('/');
+      navigate(redirect);
     } catch (error) {
       if (error.response && error.response.data.message) setErr(error.response.data.message);
     }
@@ -82,7 +91,7 @@ const SignUp = () => {
           Next
         </button>
         {err && <p style={{ backgroundColor: "red", color: "white" }}>{err}</p>}
-        <Link to="/login">Already have an account ? Login ...</Link>
+        <Link to={redirect ==='/'? '/login' : `/login?redirect=${redirect}`}>Already have an account ? Login ...</Link>
       </div>
       {/* {toastAlert && <Toaster position="bottom-left" reverseOrder={false} />} */}
     </form>
